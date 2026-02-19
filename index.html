@@ -3,253 +3,385 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AML SmartGuard — Outbound AI System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Outbound AI Sales System — Unpaste Proposal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --purple-900: #4c1d95;
-      --purple-800: #5b21b6;
-      --purple-700: #6d28d9;
-      --purple-600: #7c3aed;
-      --purple-500: #8b5cf6;
-      --purple-400: #a78bfa;
-      --purple-100: #ede9fe;
-      --purple-50: #f5f3ff;
-      --green-600: #16a34a;
-      --green-100: #dcfce7;
-      --blue-600: #2563eb;
-      --blue-100: #dbeafe;
-      --amber-600: #d97706;
-      --amber-100: #fef3c7;
-      --red-600: #dc2626;
-      --red-100: #fee2e2;
-      --gray-900: #111827;
-      --gray-700: #374151;
-      --gray-500: #6b7280;
-      --gray-300: #d1d5db;
-      --gray-100: #f3f4f6;
-      --gray-50: #f9fafb;
+      --red: #DC2626;
+      --red-hover: #B91C1C;
+      --fg: #09090B;
+      --bg: #FAFAFA;
+      --muted: #E4E4E7;
+      --muted-text: #71717A;
+      --card: #FAFAFA;
+      --secondary: #F4F4F5;
+      --green: #22C55E;
+      --amber: #F59E0B;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--gray-50);
-      color: var(--gray-900);
-      padding: 40px 20px;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 59px,
+        var(--muted) 59px,
+        var(--muted) 60px
+      );
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 9999;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
+      padding: 64px;
     }
+    @media (max-width: 768px) { .container { padding: 24px; } }
 
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-    .header h1 {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--purple-900);
-      margin-bottom: 8px;
-    }
-    .header p {
-      font-size: 16px;
-      color: var(--gray-500);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Phase sections */
-    .phase {
-      margin-bottom: 32px;
-      position: relative;
-    }
-    .phase-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--purple-800);
-      color: white;
-      font-size: 12px;
-      font-weight: 700;
+    /* Monospace labels */
+    .mono {
+      font-family: 'Space Mono', monospace;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 16px;
     }
-    .phase-label .num {
-      background: rgba(255,255,255,0.25);
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red);
+    }
+
+    /* Header / Cover */
+    .cover {
+      padding: 80px 0 64px;
+      border-bottom: 2px solid var(--red);
+      margin-bottom: 64px;
+    }
+    .cover-top {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 11px;
+      justify-content: space-between;
+      margin-bottom: 48px;
     }
-
-    /* Flow connector */
-    .connector {
+    .logo {
       display: flex;
-      justify-content: center;
-      padding: 12px 0;
+      align-items: center;
+      gap: 12px;
     }
-    .connector .arrow {
-      width: 2px;
+    .logo-mark {
+      width: 32px;
       height: 32px;
-      background: var(--purple-400);
-      position: relative;
+      background: var(--red);
+      box-shadow: 2px 2px 0 var(--fg);
     }
-    .connector .arrow::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-top: 8px solid var(--purple-400);
+    .logo-word {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cover-meta {
+      text-align: right;
+    }
+    .cover-meta .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-text);
+    }
+    .cover-meta .value {
+      font-size: 13px;
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .cover h1 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin-bottom: 16px;
+    }
+    .cover h1 .accent { color: var(--red); }
+    .cover .subtitle {
+      font-size: 18px;
+      color: var(--muted-text);
+      max-width: 640px;
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .cover h1 { font-size: 32px; }
+      .cover-top { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .cover-meta { text-align: left; }
     }
 
-    /* Cards */
+    /* Data labels */
+    .data-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .data-item .data-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-text);
+      margin-bottom: 2px;
+    }
+    .data-item .data-value {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Section structure */
+    .section {
+      margin-bottom: 64px;
+    }
+    .section-header {
+      margin-bottom: 24px;
+    }
+    .section-header h2 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-top: 8px;
+    }
+
+    /* Red divider */
+    hr.red { border: none; height: 2px; background: var(--red); margin: 48px 0; }
+    hr.dashed { border: none; border-top: 1px dashed var(--muted); margin: 32px 0; }
+
+    /* Cards - brutalist */
     .card {
       background: white;
-      border-radius: 16px;
+      border: 1px solid var(--muted);
+      border-radius: 0;
       padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      border: 1px solid var(--gray-100);
+      box-shadow: 4px 4px 0 var(--fg);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--fg);
     }
     .card-header {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
     }
-    .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+    .card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
       flex-shrink: 0;
     }
-    .card-icon.purple { background: var(--purple-100); }
-    .card-icon.green { background: var(--green-100); }
-    .card-icon.blue { background: var(--blue-100); }
-    .card-icon.amber { background: var(--amber-100); }
-    .card-icon.red { background: var(--red-100); }
     .card-title {
+      font-family: system-ui, -apple-system, sans-serif;
       font-size: 18px;
-      font-weight: 700;
-      color: var(--gray-900);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .card-subtitle {
-      font-size: 13px;
-      color: var(--gray-500);
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted-text);
+      margin-top: 4px;
     }
 
-    /* Flow diagram inside cards */
-    .flow-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    /* Flow steps */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
     }
     .flow-step {
-      flex: 1;
-      min-width: 160px;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      border-radius: 12px;
+      background: var(--secondary);
+      border: 1px solid var(--muted);
+      border-radius: 0;
       padding: 16px;
       position: relative;
+    }
+    .flow-step::before {
+      content: attr(data-step);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      background: var(--red);
+      padding: 2px 6px;
+      position: absolute;
+      top: -1px;
+      left: -1px;
     }
     .flow-step h4 {
       font-size: 13px;
       font-weight: 700;
-      color: var(--gray-900);
-      margin-bottom: 6px;
+      margin-top: 8px;
+      margin-bottom: 4px;
     }
     .flow-step p {
       font-size: 12px;
-      color: var(--gray-500);
+      color: var(--muted-text);
       line-height: 1.5;
     }
-    .flow-step .step-num {
-      position: absolute;
-      top: -8px;
-      left: 12px;
-      background: var(--purple-600);
-      color: white;
-      font-size: 10px;
-      font-weight: 700;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
 
-    /* Decision tree */
-    .decision-tree {
+    /* Outcomes grid */
+    .outcomes-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-top: 16px;
+      margin-top: 20px;
     }
     @media (min-width: 768px) {
-      .decision-tree { grid-template-columns: repeat(4, 1fr); }
-      .decision-tree.three-col { grid-template-columns: repeat(3, 1fr); }
+      .outcomes-grid { grid-template-columns: repeat(4, 1fr); }
     }
     .outcome {
-      border-radius: 12px;
-      padding: 14px;
       border: 2px solid;
-    }
-    .outcome.hot {
-      background: var(--green-100);
-      border-color: var(--green-600);
-    }
-    .outcome.warm {
-      background: var(--blue-100);
-      border-color: var(--blue-600);
-    }
-    .outcome.cold {
-      background: var(--amber-100);
-      border-color: var(--amber-600);
-    }
-    .outcome.dead {
-      background: var(--red-100);
-      border-color: var(--red-600);
+      border-radius: 0;
+      padding: 16px;
     }
     .outcome h4 {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .outcome.hot h4 { color: var(--green-600); }
-    .outcome.warm h4 { color: var(--blue-600); }
-    .outcome.cold h4 { color: var(--amber-600); }
-    .outcome.dead h4 { color: var(--red-600); }
-    .outcome p {
+      font-family: 'Space Mono', monospace;
       font-size: 11px;
-      color: var(--gray-700);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .outcome p {
+      font-size: 12px;
+      color: var(--fg);
       line-height: 1.4;
     }
     .outcome .action {
-      margin-top: 8px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .outcome.hot { border-color: var(--green); }
+    .outcome.hot h4, .outcome.hot .action { color: var(--green); }
+    .outcome.warm { border-color: #2563EB; }
+    .outcome.warm h4, .outcome.warm .action { color: #2563EB; }
+    .outcome.cold { border-color: var(--amber); }
+    .outcome.cold h4, .outcome.cold .action { color: var(--amber); }
+    .outcome.dead { border-color: var(--red); }
+    .outcome.dead h4, .outcome.dead .action { color: var(--red); }
+
+    /* Script block */
+    .script {
+      background: var(--fg);
+      color: #E4E4E7;
+      border-radius: 0;
+      padding: 24px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 20px;
+      box-shadow: 4px 4px 0 var(--red);
+    }
+    .script .ai {
+      color: var(--red);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
       font-size: 11px;
-      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .script .human {
+      color: var(--green);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .script .note {
+      color: var(--muted-text);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .script .divider {
+      border-top: 1px dashed #27272A;
+      margin: 14px 0;
+    }
+
+    /* Follow-up paths */
+    .paths-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (min-width: 768px) {
+      .paths-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .path {
+      border: 1px solid var(--muted);
+      border-radius: 0;
+      padding: 20px;
+      background: white;
+    }
+    .path h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--red);
+    }
+    .path .step {
       display: flex;
-      align-items: center;
-      gap: 4px;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .path .step .time {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted-text);
+      min-width: 60px;
+      flex-shrink: 0;
+    }
+    .path .step .channel {
+      font-weight: 600;
     }
 
     /* Tech stack */
@@ -262,124 +394,136 @@
       .tech-grid { grid-template-columns: repeat(4, 1fr); }
     }
     .tech-item {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      border-radius: 12px;
-      padding: 16px;
+      border: 1px solid var(--muted);
+      border-radius: 0;
+      padding: 20px 16px;
+      background: white;
       text-align: center;
     }
-    .tech-item .emoji {
+    .tech-item .icon {
       font-size: 28px;
       margin-bottom: 8px;
     }
     .tech-item h4 {
-      font-size: 13px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--gray-900);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .tech-item p {
       font-size: 11px;
-      color: var(--gray-500);
-      margin-top: 2px;
+      color: var(--muted-text);
+      margin-top: 4px;
+      line-height: 1.4;
     }
 
-    /* Compliance banner */
-    .compliance-banner {
-      background: linear-gradient(135deg, var(--purple-900), var(--purple-700));
-      color: white;
-      border-radius: 16px;
-      padding: 24px;
-      margin-top: 32px;
+    /* Compliance */
+    .compliance {
+      background: var(--fg);
+      color: var(--bg);
+      border-radius: 0;
+      padding: 32px;
+      box-shadow: 4px 4px 0 var(--red);
     }
-    .compliance-banner h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .compliance h3 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
     }
-    .compliance-list {
+    .compliance-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 8px;
+      gap: 10px;
     }
     @media (min-width: 768px) {
-      .compliance-list { grid-template-columns: 1fr 1fr; }
+      .compliance-grid { grid-template-columns: 1fr 1fr; }
     }
     .compliance-item {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
+      gap: 10px;
       font-size: 13px;
       line-height: 1.4;
-      opacity: 0.9;
+      color: #A1A1AA;
     }
     .compliance-item .check {
-      color: #86efac;
-      font-weight: bold;
+      color: var(--green);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
       flex-shrink: 0;
     }
 
-    /* Script preview */
-    .script-box {
-      background: var(--gray-900);
-      color: #e5e7eb;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 16px;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    .script-box .ai { color: var(--purple-400); font-weight: 600; }
-    .script-box .human { color: #86efac; font-weight: 600; }
-    .script-box .note { color: var(--gray-500); font-style: italic; }
-    .script-box .divider {
-      border-top: 1px solid #374151;
-      margin: 12px 0;
-    }
-
-    /* Optional badge */
+    /* Badge */
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       padding: 3px 8px;
-      border-radius: 6px;
+      border: 1px solid;
+      margin-left: 8px;
     }
-    .badge.optional {
-      background: var(--amber-100);
-      color: var(--amber-600);
-    }
-    .badge.required {
-      background: var(--purple-100);
-      color: var(--purple-700);
-    }
+    .badge.optional { border-color: var(--amber); color: var(--amber); }
+    .badge.core { border-color: var(--red); color: var(--red); }
 
-    /* Horizontal arrow between steps */
-    .flow-row .flow-step:not(:last-child)::after {
+    /* Arrow connectors */
+    .connector {
+      display: flex;
+      justify-content: center;
+      padding: 16px 0;
+    }
+    .arrow-down {
+      width: 2px;
+      height: 40px;
+      background: var(--red);
+      position: relative;
+    }
+    .arrow-down::after {
       content: '';
       position: absolute;
-      right: -9px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      border-left: 7px solid var(--purple-400);
-      z-index: 1;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--red);
     }
 
-    /* Section divider */
-    .section-note {
-      text-align: center;
+    /* Footer */
+    .footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 2px solid var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-right {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-right .data-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-text);
+    }
+    .footer-right .data-value {
       font-size: 12px;
-      color: var(--gray-500);
-      padding: 8px 0;
       font-weight: 500;
     }
   </style>
@@ -387,290 +531,396 @@
 <body>
   <div class="container">
 
-    <!-- Header -->
-    <div class="header">
-      <h1>Outbound AI Sales System</h1>
-      <p>AI-powered outbound calling with email pre-warm, decision-maker validation, and multi-channel follow-up</p>
+    <!-- COVER -->
+    <div class="cover">
+      <div class="cover-top">
+        <div class="logo">
+          <div class="logo-mark"></div>
+          <div class="logo-word">UNPASTE</div>
+        </div>
+        <div class="cover-meta">
+          <div class="label">Prepared For</div>
+          <div class="value">AML SmartGuard</div>
+        </div>
+      </div>
+
+      <h1>OUTBOUND AI<br><span class="accent">SALES SYSTEM</span></h1>
+      <p class="subtitle">AI-powered outbound calling with email pre-warm, decision-maker validation, and multi-channel follow-up. Built for targeted industry outreach at scale.</p>
+
+      <div class="data-row">
+        <div class="data-item">
+          <div class="data-label">D</div>
+          <div class="data-value">February 2026</div>
+        </div>
+        <div class="data-item">
+          <div class="data-label">V</div>
+          <div class="data-value">1.0</div>
+        </div>
+        <div class="data-item">
+          <div class="data-label">S</div>
+          <div class="data-value">Proposal</div>
+        </div>
+        <div class="data-item">
+          <div class="data-label">A</div>
+          <div class="data-value">Elliot Stone</div>
+        </div>
+      </div>
     </div>
 
-    <!-- PHASE 1: LIST BUILDING -->
-    <div class="phase">
-      <div class="phase-label"><span class="num">1</span> List Building</div>
+    <!-- [001] LIST BUILDING -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[001] List Building</span>
+        <h2>CONTACT ACQUISITION & CLEANING</h2>
+      </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-icon purple">📋</div>
+          <div class="card-num">01</div>
           <div>
-            <div class="card-title">Contact Acquisition & Cleaning</div>
-            <div class="card-subtitle">Apollo.io + AI verification — segmented by industry</div>
+            <div class="card-title">Apollo.io + AI Verification</div>
+            <div class="card-desc">Segmented by industry. Decision-makers only. DNC-compliant.</div>
           </div>
         </div>
-        <div class="flow-row">
-          <div class="flow-step">
-            <span class="step-num">1</span>
+        <div class="flow-grid">
+          <div class="flow-step" data-step="A">
             <h4>Apollo.io Extract</h4>
-            <p>Pull contacts by industry: real estate, accounting, law, conveyancing, precious metals</p>
+            <p>Pull contacts by industry: real estate, accounting, law, conveyancing, precious metals. Australia-wide.</p>
           </div>
-          <div class="flow-step">
-            <span class="step-num">2</span>
+          <div class="flow-step" data-step="B">
             <h4>AI Cleaning Pass</h4>
-            <p>Verify emails, identify decision-makers (principals, managing partners, owners)</p>
+            <p>Verify emails, identify decision-makers (principals, managing partners, owners). Deduplicate.</p>
           </div>
-          <div class="flow-step">
-            <span class="step-num">3</span>
+          <div class="flow-step" data-step="C">
             <h4>DNC Register Check</h4>
-            <p>Cross-reference against Do Not Call Register. Remove sole traders & flagged numbers</p>
+            <p>Cross-reference against Do Not Call Register. Remove sole traders and flagged numbers.</p>
           </div>
-          <div class="flow-step">
-            <span class="step-num">4</span>
+          <div class="flow-step" data-step="D">
             <h4>Segment & Queue</h4>
-            <p>Tag by industry, company size, state. Priority-rank by compliance deadline urgency</p>
+            <p>Tag by industry, company size, state. Priority-rank by compliance deadline urgency.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="connector"><div class="arrow"></div></div>
+    <div class="connector"><div class="arrow-down"></div></div>
 
-    <!-- PHASE 2: EMAIL PRE-WARM -->
-    <div class="phase">
-      <div class="phase-label"><span class="num">2</span> Email Pre-Warm <span class="badge optional">Optional</span></div>
+    <!-- [002] EMAIL PRE-WARM -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[002] Email Pre-Warm</span><span class="badge optional">Optional</span>
+        <h2>INDUSTRY-SPECIFIC INTRODUCTION</h2>
+      </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-icon blue">✉️</div>
+          <div class="card-num">02</div>
           <div>
-            <div class="card-title">Email Introduction</div>
-            <div class="card-subtitle">Industry-specific email sent 2-3 days before AI call — warms the lead</div>
+            <div class="card-title">Email Before the Call</div>
+            <div class="card-desc">Sent 2-3 days before AI call. Warms the lead. Tracks engagement for call prioritisation.</div>
           </div>
         </div>
-        <div class="flow-row">
-          <div class="flow-step">
-            <span class="step-num">1</span>
+        <div class="flow-grid">
+          <div class="flow-step" data-step="A">
             <h4>Send Industry Email</h4>
             <p>"New AML regulations affecting [industry] businesses — here's what you need to know"</p>
           </div>
-          <div class="flow-step">
-            <span class="step-num">2</span>
+          <div class="flow-step" data-step="B">
             <h4>Track Engagement</h4>
-            <p>Opens, clicks, replies. Engaged contacts get priority in call queue</p>
+            <p>Opens, clicks, replies. Engaged contacts get priority in the call queue.</p>
           </div>
-          <div class="flow-step">
-            <span class="step-num">3</span>
+          <div class="flow-step" data-step="C">
             <h4>Priority Scoring</h4>
-            <p><strong>Opened email</strong> = call first<br><strong>Clicked link</strong> = hot lead<br><strong>No open</strong> = still call, lower priority</p>
+            <p><strong>Opened</strong> = call first. <strong>Clicked</strong> = hot lead. <strong>No open</strong> = still call, lower priority.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="connector"><div class="arrow"></div></div>
+    <div class="connector"><div class="arrow-down"></div></div>
 
-    <!-- PHASE 3: AI OUTBOUND CALL -->
-    <div class="phase">
-      <div class="phase-label"><span class="num">3</span> AI Outbound Call <span class="badge required">Core</span></div>
+    <!-- [003] AI OUTBOUND CALL -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[003] AI Outbound Call</span><span class="badge core">Core</span>
+        <h2>DECISION-MAKER VALIDATION</h2>
+      </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-icon green">📞</div>
+          <div class="card-num">03</div>
           <div>
-            <div class="card-title">AI Voice Agent — Decision Maker Validation</div>
-            <div class="card-subtitle">Retell AI dials out, validates contact, qualifies interest</div>
+            <div class="card-title">AI Voice Agent Dials Out</div>
+            <div class="card-desc">Validates contact, identifies the decision-maker, qualifies interest, routes to the right next step.</div>
           </div>
         </div>
 
-        <!-- Call script preview -->
-        <div class="script-box">
-          <span class="ai">AI:</span> "Hi, this is Sarah from AML Smart Guard. I'm calling about the new AML compliance regulations coming into effect for [industry] businesses. Could I speak with [contact name] please?"<br><br>
+        <div class="script">
+          <span class="ai">AI Agent:</span> "Hi, this is Sarah from AML Smart Guard. I'm calling about the new AML compliance regulations coming into effect for [industry] businesses. Could I speak with [contact name] please?"<br><br>
           <div class="divider"></div>
-          <span class="note">// Gatekeeper scenario:</span><br>
+          <span class="note">// Gatekeeper scenario</span><br><br>
           <span class="human">Receptionist:</span> "They're not available right now."<br>
-          <span class="ai">AI:</span> "No problem — could I get the best time to reach them? Or I can send through a quick summary by email if that's easier."<br><br>
+          <span class="ai">AI Agent:</span> "No problem — could I get the best time to reach them? Or I can send through a quick summary by email if that's easier."<br><br>
           <div class="divider"></div>
-          <span class="note">// Decision maker reached:</span><br>
-          <span class="ai">AI:</span> "Great to speak with you. Are you the person who handles compliance matters for the business?"<br>
+          <span class="note">// Decision maker reached</span><br><br>
+          <span class="ai">AI Agent:</span> "Great to speak with you. Are you the person who handles compliance matters for the business?"<br>
           <span class="human">Contact:</span> "Yes, that's me."<br>
-          <span class="ai">AI:</span> "Perfect. Are you aware that AUSTRAC's Tranche 2 AML/CTF reforms will require [industry] businesses to have compliance programs in place? We help businesses like yours get set up. Would you like me to send through some information, or I can connect you with one of our compliance specialists for a quick chat?"
+          <span class="ai">AI Agent:</span> "Perfect. Are you aware that AUSTRAC's Tranche 2 AML/CTF reforms will require [industry] businesses to have compliance programs in place? We help businesses like yours get set up. Would you like me to send through some information, or I can connect you with one of our compliance specialists?"
         </div>
 
-        <!-- Decision tree -->
-        <div class="decision-tree" style="margin-top: 20px;">
+        <div class="outcomes-grid">
           <div class="outcome hot">
-            <h4>🔥 Hot — Transfer</h4>
+            <h4>Hot — Transfer</h4>
             <p>"Yes, I'd like to speak to someone"</p>
-            <div class="action">→ Live transfer to Andrew's team</div>
+            <div class="action">&#8594; Live transfer to team</div>
           </div>
           <div class="outcome warm">
-            <h4>📧 Warm — Send Info</h4>
+            <h4>Warm — Send Info</h4>
             <p>"Send me some information"</p>
-            <div class="action">→ Email info pack + SMS booking link</div>
+            <div class="action">&#8594; Email + SMS follow-up</div>
           </div>
           <div class="outcome cold">
-            <h4>🔄 Cold — Retry</h4>
+            <h4>Cold — Retry</h4>
             <p>Gatekeeper / voicemail / wrong person</p>
-            <div class="action">→ Schedule callback + email fallback</div>
+            <div class="action">&#8594; Schedule callback</div>
           </div>
           <div class="outcome dead">
-            <h4>❌ Not Interested</h4>
-            <p>"No thanks" / "We're already covered"</p>
-            <div class="action">→ Thank, tag, remove from queue</div>
+            <h4>Not Interested</h4>
+            <p>"No thanks" / "Already covered"</p>
+            <div class="action">&#8594; Tag &amp; remove</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="connector"><div class="arrow"></div></div>
+    <div class="connector"><div class="arrow-down"></div></div>
 
-    <!-- PHASE 4: FOLLOW-UP -->
-    <div class="phase">
-      <div class="phase-label"><span class="num">4</span> Multi-Channel Follow-Up</div>
+    <!-- [004] FOLLOW-UP -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[004] Multi-Channel Follow-Up</span>
+        <h2>AUTOMATED SEQUENCES BY OUTCOME</h2>
+      </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-icon amber">🔁</div>
+          <div class="card-num">04</div>
           <div>
-            <div class="card-title">Automated Follow-Up Sequences</div>
-            <div class="card-subtitle">Different paths based on call outcome — email, SMS, human callback</div>
+            <div class="card-title">Email, SMS & Human Callback</div>
+            <div class="card-desc">Different automation paths based on call outcome. No lead falls through the cracks.</div>
           </div>
         </div>
-        <div class="decision-tree three-col">
-          <div class="outcome hot" style="border-width: 1px;">
+
+        <div class="paths-grid">
+          <div class="path">
             <h4>Hot Lead Path</h4>
-            <p style="margin-bottom: 8px;"><strong>Immediately:</strong> Transfer to human</p>
-            <p><strong>If no answer:</strong> SMS with booking link + email with info pack</p>
-            <p style="margin-top: 4px;"><strong>Day 2:</strong> Human follow-up call</p>
-            <p style="margin-top: 4px;"><strong>Day 5:</strong> "Just checking in" email</p>
+            <div class="step">
+              <span class="time">Now</span>
+              <span><span class="channel">Phone:</span> Live transfer to human</span>
+            </div>
+            <div class="step">
+              <span class="time">If N/A</span>
+              <span><span class="channel">SMS:</span> Booking link + <span class="channel">Email:</span> Info pack</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 2</span>
+              <span><span class="channel">Human:</span> Follow-up call</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 5</span>
+              <span><span class="channel">Email:</span> "Just checking in"</span>
+            </div>
           </div>
-          <div class="outcome warm" style="border-width: 1px;">
+          <div class="path">
             <h4>Warm Lead Path</h4>
-            <p style="margin-bottom: 8px;"><strong>Immediately:</strong> Email info pack</p>
-            <p><strong>+1 hour:</strong> SMS "Info sent — let us know if you have questions"</p>
-            <p style="margin-top: 4px;"><strong>Day 3:</strong> Follow-up email "Did you get a chance to look?"</p>
-            <p style="margin-top: 4px;"><strong>Day 7:</strong> AI call #2 or human call</p>
+            <div class="step">
+              <span class="time">Now</span>
+              <span><span class="channel">Email:</span> Info pack sent</span>
+            </div>
+            <div class="step">
+              <span class="time">+1 Hour</span>
+              <span><span class="channel">SMS:</span> "Info sent — questions?"</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 3</span>
+              <span><span class="channel">Email:</span> "Did you get a chance?"</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 7</span>
+              <span><span class="channel">AI Call:</span> Second attempt</span>
+            </div>
           </div>
-          <div class="outcome cold" style="border-width: 1px;">
+          <div class="path">
             <h4>Cold / Retry Path</h4>
-            <p style="margin-bottom: 8px;"><strong>Day 1:</strong> Email "We tried to reach you"</p>
-            <p><strong>Day 3:</strong> AI call attempt #2</p>
-            <p style="margin-top: 4px;"><strong>Day 5:</strong> SMS "Quick question about AML compliance"</p>
-            <p style="margin-top: 4px;"><strong>Day 10:</strong> Final AI call attempt #3</p>
+            <div class="step">
+              <span class="time">Day 1</span>
+              <span><span class="channel">Email:</span> "We tried to reach you"</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 3</span>
+              <span><span class="channel">AI Call:</span> Attempt #2</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 5</span>
+              <span><span class="channel">SMS:</span> "Quick question re: AML"</span>
+            </div>
+            <div class="step">
+              <span class="time">Day 10</span>
+              <span><span class="channel">AI Call:</span> Final attempt #3</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="connector"><div class="arrow"></div></div>
+    <div class="connector"><div class="arrow-down"></div></div>
 
-    <!-- PHASE 5: REPORTING -->
-    <div class="phase">
-      <div class="phase-label"><span class="num">5</span> Reporting & CRM</div>
+    <!-- [005] REPORTING -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[005] Reporting & CRM</span>
+        <h2>DASHBOARD & LEAD TRACKING</h2>
+      </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-icon purple">📊</div>
+          <div class="card-num">05</div>
           <div>
-            <div class="card-title">Dashboard & Lead Tracking</div>
-            <div class="card-subtitle">All interactions logged — call recordings, emails, SMS, outcomes</div>
+            <div class="card-title">Every Interaction Logged</div>
+            <div class="card-desc">Call recordings, emails, SMS, outcomes. Full audit trail and campaign analytics.</div>
           </div>
         </div>
-        <div class="flow-row">
-          <div class="flow-step">
+        <div class="flow-grid">
+          <div class="flow-step" data-step="A">
             <h4>Call Metrics</h4>
-            <p>Calls made, answer rate, avg duration, transfer rate, conversations per industry</p>
+            <p>Calls made, answer rate, avg duration, transfer rate, conversations per industry.</p>
           </div>
-          <div class="flow-step">
+          <div class="flow-step" data-step="B">
             <h4>Lead Pipeline</h4>
-            <p>Hot / Warm / Cold counts. Conversion: call → consultation → client</p>
+            <p>Hot / Warm / Cold counts. Conversion: call to consultation to client.</p>
           </div>
-          <div class="flow-step">
+          <div class="flow-step" data-step="C">
             <h4>Call Recordings</h4>
-            <p>Every AI call recorded for QA, compliance review, and training improvements</p>
+            <p>Every AI call recorded for QA, compliance review, and agent training.</p>
           </div>
-          <div class="flow-step">
+          <div class="flow-step" data-step="D">
             <h4>Campaign ROI</h4>
-            <p>Cost per lead, cost per consultation booked, revenue per campaign</p>
+            <p>Cost per lead, cost per consultation booked, revenue per campaign.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TECH STACK -->
-    <div style="margin-top: 40px;">
-      <div class="phase-label"><span class="num">⚙</span> Tech Stack</div>
+    <hr class="red">
+
+    <!-- [006] TECH STACK -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[006] Tech Stack</span>
+        <h2>INFRASTRUCTURE</h2>
+      </div>
       <div class="tech-grid">
         <div class="tech-item">
-          <div class="emoji">🤖</div>
+          <div class="icon">&#x1f916;</div>
           <h4>Retell AI</h4>
-          <p>Voice agent — outbound calls, speech-to-text, text-to-speech, live transfer</p>
+          <p>Voice agent. Outbound calls, speech-to-text, text-to-speech, live transfer.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">📱</div>
+          <div class="icon">&#x1f4f1;</div>
           <h4>Twilio</h4>
-          <p>Phone numbers (+61), SMS sending, call routing, ACMA-compliant sender IDs</p>
+          <p>Phone numbers (+61), SMS, call routing, ACMA-compliant sender IDs.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">✉️</div>
-          <h4>Instantly / Mailgun</h4>
-          <p>Email sequences, open/click tracking, deliverability, warm-up</p>
+          <div class="icon">&#x2709;&#xFE0F;</div>
+          <h4>Instantly</h4>
+          <p>Email sequences, open/click tracking, deliverability, warm-up.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">📋</div>
+          <div class="icon">&#x1f4cb;</div>
           <h4>Apollo.io</h4>
-          <p>Contact data, industry filtering, email verification, enrichment</p>
+          <p>Contact data, industry filtering, email verification, enrichment.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">🔗</div>
-          <h4>n8n / Zapier</h4>
-          <p>Workflow orchestration — connects all tools, triggers follow-ups, syncs CRM</p>
+          <div class="icon">&#x1f517;</div>
+          <h4>n8n</h4>
+          <p>Workflow orchestration. Connects all tools, triggers follow-ups, syncs CRM.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">💬</div>
+          <div class="icon">&#x1f4ac;</div>
           <h4>Botpress</h4>
-          <p>Text chatbot on website — handles inbound leads from email/call traffic</p>
+          <p>Text chatbot on website. Handles inbound leads from email/call traffic.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">📊</div>
-          <h4>CRM (TBD)</h4>
-          <p>Lead tracking, pipeline management, call notes, follow-up scheduling</p>
+          <div class="icon">&#x1f4ca;</div>
+          <h4>CRM</h4>
+          <p>Lead tracking, pipeline management, call notes, follow-up scheduling.</p>
         </div>
         <div class="tech-item">
-          <div class="emoji">🔒</div>
-          <h4>DNC Register API</h4>
-          <p>ACMA Do Not Call Register lookup — mandatory pre-call compliance check</p>
+          <div class="icon">&#x1f512;</div>
+          <h4>DNC API</h4>
+          <p>ACMA Do Not Call Register lookup. Mandatory pre-call compliance check.</p>
         </div>
       </div>
     </div>
 
     <!-- COMPLIANCE -->
-    <div class="compliance-banner">
-      <h3>⚖️ Australian Compliance Guardrails</h3>
-      <div class="compliance-list">
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>DNC Register checked before every call — sole traders & flagged numbers excluded</span>
+    <div class="section">
+      <div class="section-header">
+        <span class="section-tag">[007] Compliance</span>
+        <h2>AUSTRALIAN REGULATORY GUARDRAILS</h2>
+      </div>
+      <div class="compliance">
+        <h3>BUILT FOR AUSTRALIAN LAW</h3>
+        <div class="compliance-grid">
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>DNC Register checked before every call. Sole traders and flagged numbers excluded.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>Calling hours enforced: 9am-8pm weekdays, 9am-5pm Saturdays, no Sundays.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>AI disclosure: agent identifies as calling on behalf of AML SmartGuard.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>Opt-out honoured immediately. "Not interested" = removed from all sequences.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>All calls recorded and logged for compliance audit trail.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>Targeting incorporated businesses only (Pty Ltd). DNC Register exempt.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>SMS complies with Spam Act. Sender ID, opt-out, business hours only.</span>
+          </div>
+          <div class="compliance-item">
+            <span class="check">&#10003;</span>
+            <span>Email includes unsubscribe, sender identity, ABN. Spam Act compliant.</span>
+          </div>
         </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>Calling hours enforced: 9am-8pm weekdays, 9am-5pm Saturdays, no Sundays</span>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-left">
+        <div class="logo-mark" style="width:24px;height:24px;box-shadow:2px 2px 0 var(--fg);"></div>
+        <span class="mono" style="font-size:12px;font-weight:700;">UNPASTE</span>
+      </div>
+      <div class="footer-right">
+        <div>
+          <div class="data-label">W</div>
+          <div class="data-value">unpaste.ai</div>
         </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>AI disclosure: agent identifies as calling on behalf of AML SmartGuard</span>
+        <div>
+          <div class="data-label">E</div>
+          <div class="data-value">elliot@unpaste.co</div>
         </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>Opt-out honoured immediately — "not interested" = removed from all sequences</span>
-        </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>All calls recorded and logged for compliance audit trail</span>
-        </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>Targeting incorporated businesses only (Pty Ltd) — DNC Register exempt</span>
-        </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>SMS complies with Spam Act — sender ID, opt-out, business hours only</span>
-        </div>
-        <div class="compliance-item">
-          <span class="check">✓</span>
-          <span>Email includes unsubscribe, sender identity, ABN — CAN-SPAM + Spam Act compliant</span>
+        <div>
+          <div class="data-label">L</div>
+          <div class="data-value">Brisbane</div>
         </div>
       </div>
     </div>
