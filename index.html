@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AML SmartGuard — Outbound AI System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-900: #4c1d95;
+      --purple-800: #5b21b6;
+      --purple-700: #6d28d9;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-400: #a78bfa;
+      --purple-100: #ede9fe;
+      --purple-50: #f5f3ff;
+      --green-600: #16a34a;
+      --green-100: #dcfce7;
+      --blue-600: #2563eb;
+      --blue-100: #dbeafe;
+      --amber-600: #d97706;
+      --amber-100: #fef3c7;
+      --red-600: #dc2626;
+      --red-100: #fee2e2;
+      --gray-900: #111827;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--purple-900);
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 16px;
+      color: var(--gray-500);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Phase sections */
+    .phase {
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .phase-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--purple-800);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .phase-label .num {
+      background: rgba(255,255,255,0.25);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    /* Flow connector */
+    .connector {
+      display: flex;
+      justify-content: center;
+      padding: 12px 0;
+    }
+    .connector .arrow {
+      width: 2px;
+      height: 32px;
+      background: var(--purple-400);
+      position: relative;
+    }
+    .connector .arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--purple-400);
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border: 1px solid var(--gray-100);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .card-icon.purple { background: var(--purple-100); }
+    .card-icon.green { background: var(--green-100); }
+    .card-icon.blue { background: var(--blue-100); }
+    .card-icon.amber { background: var(--amber-100); }
+    .card-icon.red { background: var(--red-100); }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    /* Flow diagram inside cards */
+    .flow-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1;
+      min-width: 160px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+    }
+    .flow-step h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 6px;
+    }
+    .flow-step p {
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+    .flow-step .step-num {
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      background: var(--purple-600);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Decision tree */
+    .decision-tree {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (min-width: 768px) {
+      .decision-tree { grid-template-columns: repeat(4, 1fr); }
+      .decision-tree.three-col { grid-template-columns: repeat(3, 1fr); }
+    }
+    .outcome {
+      border-radius: 12px;
+      padding: 14px;
+      border: 2px solid;
+    }
+    .outcome.hot {
+      background: var(--green-100);
+      border-color: var(--green-600);
+    }
+    .outcome.warm {
+      background: var(--blue-100);
+      border-color: var(--blue-600);
+    }
+    .outcome.cold {
+      background: var(--amber-100);
+      border-color: var(--amber-600);
+    }
+    .outcome.dead {
+      background: var(--red-100);
+      border-color: var(--red-600);
+    }
+    .outcome h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .outcome.hot h4 { color: var(--green-600); }
+    .outcome.warm h4 { color: var(--blue-600); }
+    .outcome.cold h4 { color: var(--amber-600); }
+    .outcome.dead h4 { color: var(--red-600); }
+    .outcome p {
+      font-size: 11px;
+      color: var(--gray-700);
+      line-height: 1.4;
+    }
+    .outcome .action {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Tech stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .tech-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .tech-item {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .tech-item .emoji {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .tech-item h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    .tech-item p {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    /* Compliance banner */
+    .compliance-banner {
+      background: linear-gradient(135deg, var(--purple-900), var(--purple-700));
+      color: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    .compliance-banner h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .compliance-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    @media (min-width: 768px) {
+      .compliance-list { grid-template-columns: 1fr 1fr; }
+    }
+    .compliance-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+    .compliance-item .check {
+      color: #86efac;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    /* Script preview */
+    .script-box {
+      background: var(--gray-900);
+      color: #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .script-box .ai { color: var(--purple-400); font-weight: 600; }
+    .script-box .human { color: #86efac; font-weight: 600; }
+    .script-box .note { color: var(--gray-500); font-style: italic; }
+    .script-box .divider {
+      border-top: 1px solid #374151;
+      margin: 12px 0;
+    }
+
+    /* Optional badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .badge.optional {
+      background: var(--amber-100);
+      color: var(--amber-600);
+    }
+    .badge.required {
+      background: var(--purple-100);
+      color: var(--purple-700);
+    }
+
+    /* Horizontal arrow between steps */
+    .flow-row .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 7px solid var(--purple-400);
+      z-index: 1;
+    }
+
+    /* Section divider */
+    .section-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      padding: 8px 0;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Outbound AI Sales System</h1>
+      <p>AI-powered outbound calling with email pre-warm, decision-maker validation, and multi-channel follow-up</p>
+    </div>
+
+    <!-- PHASE 1: LIST BUILDING -->
+    <div class="phase">
+      <div class="phase-label"><span class="num">1</span> List Building</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon purple">📋</div>
+          <div>
+            <div class="card-title">Contact Acquisition & Cleaning</div>
+            <div class="card-subtitle">Apollo.io + AI verification — segmented by industry</div>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-step">
+            <span class="step-num">1</span>
+            <h4>Apollo.io Extract</h4>
+            <p>Pull contacts by industry: real estate, accounting, law, conveyancing, precious metals</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-num">2</span>
+            <h4>AI Cleaning Pass</h4>
+            <p>Verify emails, identify decision-makers (principals, managing partners, owners)</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-num">3</span>
+            <h4>DNC Register Check</h4>
+            <p>Cross-reference against Do Not Call Register. Remove sole traders & flagged numbers</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-num">4</span>
+            <h4>Segment & Queue</h4>
+            <p>Tag by industry, company size, state. Priority-rank by compliance deadline urgency</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="arrow"></div></div>
+
+    <!-- PHASE 2: EMAIL PRE-WARM -->
+    <div class="phase">
+      <div class="phase-label"><span class="num">2</span> Email Pre-Warm <span class="badge optional">Optional</span></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon blue">✉️</div>
+          <div>
+            <div class="card-title">Email Introduction</div>
+            <div class="card-subtitle">Industry-specific email sent 2-3 days before AI call — warms the lead</div>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-step">
+            <span class="step-num">1</span>
+            <h4>Send Industry Email</h4>
+            <p>"New AML regulations affecting [industry] businesses — here's what you need to know"</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-num">2</span>
+            <h4>Track Engagement</h4>
+            <p>Opens, clicks, replies. Engaged contacts get priority in call queue</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-num">3</span>
+            <h4>Priority Scoring</h4>
+            <p><strong>Opened email</strong> = call first<br><strong>Clicked link</strong> = hot lead<br><strong>No open</strong> = still call, lower priority</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="arrow"></div></div>
+
+    <!-- PHASE 3: AI OUTBOUND CALL -->
+    <div class="phase">
+      <div class="phase-label"><span class="num">3</span> AI Outbound Call <span class="badge required">Core</span></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon green">📞</div>
+          <div>
+            <div class="card-title">AI Voice Agent — Decision Maker Validation</div>
+            <div class="card-subtitle">Retell AI dials out, validates contact, qualifies interest</div>
+          </div>
+        </div>
+
+        <!-- Call script preview -->
+        <div class="script-box">
+          <span class="ai">AI:</span> "Hi, this is Sarah from AML Smart Guard. I'm calling about the new AML compliance regulations coming into effect for [industry] businesses. Could I speak with [contact name] please?"<br><br>
+          <div class="divider"></div>
+          <span class="note">// Gatekeeper scenario:</span><br>
+          <span class="human">Receptionist:</span> "They're not available right now."<br>
+          <span class="ai">AI:</span> "No problem — could I get the best time to reach them? Or I can send through a quick summary by email if that's easier."<br><br>
+          <div class="divider"></div>
+          <span class="note">// Decision maker reached:</span><br>
+          <span class="ai">AI:</span> "Great to speak with you. Are you the person who handles compliance matters for the business?"<br>
+          <span class="human">Contact:</span> "Yes, that's me."<br>
+          <span class="ai">AI:</span> "Perfect. Are you aware that AUSTRAC's Tranche 2 AML/CTF reforms will require [industry] businesses to have compliance programs in place? We help businesses like yours get set up. Would you like me to send through some information, or I can connect you with one of our compliance specialists for a quick chat?"
+        </div>
+
+        <!-- Decision tree -->
+        <div class="decision-tree" style="margin-top: 20px;">
+          <div class="outcome hot">
+            <h4>🔥 Hot — Transfer</h4>
+            <p>"Yes, I'd like to speak to someone"</p>
+            <div class="action">→ Live transfer to Andrew's team</div>
+          </div>
+          <div class="outcome warm">
+            <h4>📧 Warm — Send Info</h4>
+            <p>"Send me some information"</p>
+            <div class="action">→ Email info pack + SMS booking link</div>
+          </div>
+          <div class="outcome cold">
+            <h4>🔄 Cold — Retry</h4>
+            <p>Gatekeeper / voicemail / wrong person</p>
+            <div class="action">→ Schedule callback + email fallback</div>
+          </div>
+          <div class="outcome dead">
+            <h4>❌ Not Interested</h4>
+            <p>"No thanks" / "We're already covered"</p>
+            <div class="action">→ Thank, tag, remove from queue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="arrow"></div></div>
+
+    <!-- PHASE 4: FOLLOW-UP -->
+    <div class="phase">
+      <div class="phase-label"><span class="num">4</span> Multi-Channel Follow-Up</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon amber">🔁</div>
+          <div>
+            <div class="card-title">Automated Follow-Up Sequences</div>
+            <div class="card-subtitle">Different paths based on call outcome — email, SMS, human callback</div>
+          </div>
+        </div>
+        <div class="decision-tree three-col">
+          <div class="outcome hot" style="border-width: 1px;">
+            <h4>Hot Lead Path</h4>
+            <p style="margin-bottom: 8px;"><strong>Immediately:</strong> Transfer to human</p>
+            <p><strong>If no answer:</strong> SMS with booking link + email with info pack</p>
+            <p style="margin-top: 4px;"><strong>Day 2:</strong> Human follow-up call</p>
+            <p style="margin-top: 4px;"><strong>Day 5:</strong> "Just checking in" email</p>
+          </div>
+          <div class="outcome warm" style="border-width: 1px;">
+            <h4>Warm Lead Path</h4>
+            <p style="margin-bottom: 8px;"><strong>Immediately:</strong> Email info pack</p>
+            <p><strong>+1 hour:</strong> SMS "Info sent — let us know if you have questions"</p>
+            <p style="margin-top: 4px;"><strong>Day 3:</strong> Follow-up email "Did you get a chance to look?"</p>
+            <p style="margin-top: 4px;"><strong>Day 7:</strong> AI call #2 or human call</p>
+          </div>
+          <div class="outcome cold" style="border-width: 1px;">
+            <h4>Cold / Retry Path</h4>
+            <p style="margin-bottom: 8px;"><strong>Day 1:</strong> Email "We tried to reach you"</p>
+            <p><strong>Day 3:</strong> AI call attempt #2</p>
+            <p style="margin-top: 4px;"><strong>Day 5:</strong> SMS "Quick question about AML compliance"</p>
+            <p style="margin-top: 4px;"><strong>Day 10:</strong> Final AI call attempt #3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="arrow"></div></div>
+
+    <!-- PHASE 5: REPORTING -->
+    <div class="phase">
+      <div class="phase-label"><span class="num">5</span> Reporting & CRM</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon purple">📊</div>
+          <div>
+            <div class="card-title">Dashboard & Lead Tracking</div>
+            <div class="card-subtitle">All interactions logged — call recordings, emails, SMS, outcomes</div>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-step">
+            <h4>Call Metrics</h4>
+            <p>Calls made, answer rate, avg duration, transfer rate, conversations per industry</p>
+          </div>
+          <div class="flow-step">
+            <h4>Lead Pipeline</h4>
+            <p>Hot / Warm / Cold counts. Conversion: call → consultation → client</p>
+          </div>
+          <div class="flow-step">
+            <h4>Call Recordings</h4>
+            <p>Every AI call recorded for QA, compliance review, and training improvements</p>
+          </div>
+          <div class="flow-step">
+            <h4>Campaign ROI</h4>
+            <p>Cost per lead, cost per consultation booked, revenue per campaign</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECH STACK -->
+    <div style="margin-top: 40px;">
+      <div class="phase-label"><span class="num">⚙</span> Tech Stack</div>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="emoji">🤖</div>
+          <h4>Retell AI</h4>
+          <p>Voice agent — outbound calls, speech-to-text, text-to-speech, live transfer</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">📱</div>
+          <h4>Twilio</h4>
+          <p>Phone numbers (+61), SMS sending, call routing, ACMA-compliant sender IDs</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">✉️</div>
+          <h4>Instantly / Mailgun</h4>
+          <p>Email sequences, open/click tracking, deliverability, warm-up</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">📋</div>
+          <h4>Apollo.io</h4>
+          <p>Contact data, industry filtering, email verification, enrichment</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">🔗</div>
+          <h4>n8n / Zapier</h4>
+          <p>Workflow orchestration — connects all tools, triggers follow-ups, syncs CRM</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">💬</div>
+          <h4>Botpress</h4>
+          <p>Text chatbot on website — handles inbound leads from email/call traffic</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">📊</div>
+          <h4>CRM (TBD)</h4>
+          <p>Lead tracking, pipeline management, call notes, follow-up scheduling</p>
+        </div>
+        <div class="tech-item">
+          <div class="emoji">🔒</div>
+          <h4>DNC Register API</h4>
+          <p>ACMA Do Not Call Register lookup — mandatory pre-call compliance check</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLIANCE -->
+    <div class="compliance-banner">
+      <h3>⚖️ Australian Compliance Guardrails</h3>
+      <div class="compliance-list">
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>DNC Register checked before every call — sole traders & flagged numbers excluded</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>Calling hours enforced: 9am-8pm weekdays, 9am-5pm Saturdays, no Sundays</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>AI disclosure: agent identifies as calling on behalf of AML SmartGuard</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>Opt-out honoured immediately — "not interested" = removed from all sequences</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>All calls recorded and logged for compliance audit trail</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>Targeting incorporated businesses only (Pty Ltd) — DNC Register exempt</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>SMS complies with Spam Act — sender ID, opt-out, business hours only</span>
+        </div>
+        <div class="compliance-item">
+          <span class="check">✓</span>
+          <span>Email includes unsubscribe, sender identity, ABN — CAN-SPAM + Spam Act compliant</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
